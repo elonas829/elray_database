@@ -4,6 +4,6 @@ public class Main {
 
         Database database = new Database();
 
-        database.executeDatabase();
+        database.executeDatabaseQuery();
     }
 }

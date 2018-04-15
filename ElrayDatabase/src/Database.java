@@ -1,24 +1,25 @@
 import java.sql.*;
+import java.util.Scanner;
 
 public class Database {
-    private final String url = "jdbc:mysql://localhost/Elray?autoReconnect=true&useSSL=false";
-    private final String username = "chronic";
-    private final String password = "Magickey20";
+    Query query = new Query();
+
+    private final String url = "jdbc:mysql://localhost/elray?autoReconnect=true&useSSL=false";
+    private final String username = "root";
+    private final String password = "root";
 
     String employeeFName, employeeLName, employeeID;
 
-    private ResultSet resultSet = null;
     private Connection connection = null;
+    private ResultSet resultSet = null;
 
-
-    public void executeDatabase() {
+    public void executeDatabaseQuery() {
         loadDatabaseDriver();
         databaseConnection();
         iterateQueryResults();
     }
 
     private void loadDatabaseDriver() {
-        // Load database driver
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (Exception e) {
@@ -27,7 +28,6 @@ public class Database {
     }
 
     private void databaseConnection() {
-        // Establish database connection
         try {
             connection = DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
@@ -35,25 +35,53 @@ public class Database {
         }
     }
 
-    private void iterateQueryResults() {
+    public boolean isDatabaseConnected() {
+        return connection != null;
+    }
+
+    private void setPreparedStatementToResultSet() {
+        try {
+            resultSet = prepareQueryStatement().executeQuery();
+        } catch (SQLException e) {
+            logSQLError(e);
+        }
+    }
+
+    public PreparedStatement prepareQueryStatement(){
+        try {
+            return connection.prepareStatement(queryStatement());
+        } catch (SQLException e) {
+            logSQLError(e);
+        }
+        return null;
+    }
+
+    private String queryStatement() {
+        if (promptQuery().equals("employee")) {
+            return "SELECT  * FROM employee";
+        } else {
+            return "";
+        }
+    }
+
+    private String promptQuery() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("1. Employee info.");
+        System.out.print("Please enter option: ");
+        return scanner.next();
+    }
+
+    public void iterateQueryResults() {
         if (isDatabaseConnected()) {
             try {
-                prepareQueryStatement();
+                setPreparedStatementToResultSet();
                 if(resultSet.next()) {
                     iterateEmployeeQuery();
                 }
             } catch (SQLException e) {
                 logSQLError(e);
             }
-        }
-    }
-
-    private void prepareQueryStatement() {
-        try {
-            PreparedStatement employees = connection.prepareStatement("SELECT * FROM employee");
-            resultSet = employees.executeQuery();
-        } catch (SQLException e) {
-            logSQLError(e);
         }
     }
 
@@ -69,9 +97,9 @@ public class Database {
 
     private void getEmployeeInfo() {
         try {
-            employeeFName = resultSet.getString("employeefname");
-            employeeLName = resultSet.getString("employeelname");
-            employeeID = resultSet.getString("employeeid");
+            employeeFName = resultSet.getString("FirstName");
+            employeeLName = resultSet.getString("LastName");
+            employeeID = resultSet.getString("empid");
         } catch (SQLException e) {
             logSQLError(e);
         }
@@ -82,12 +110,6 @@ public class Database {
         System.out.println("Employee: " + employeeFName + " " + employeeLName);
         System.out.println("Employee ID: " + employeeID);
         System.out.println("---------------------------------------------------------");
-    }
-
-
-
-    private boolean isDatabaseConnected() {
-        return connection != null;
     }
 
     private void logSQLError(SQLException e) {
