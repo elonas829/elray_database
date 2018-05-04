@@ -2,66 +2,61 @@ import java.sql.*;
 import java.util.Scanner;
 
 public class Database {
-    Query query = new Query();
 
-    private final String url = "jdbc:mysql://localhost/elray?autoReconnect=true&useSSL=false";
-    private final String username = "root";
-    private final String password = "root";
-
-    String employeeFName, employeeLName, employeeID;
+    private String employeeFName, employeeLName, employeeID;
 
     private Connection connection = null;
     private ResultSet resultSet = null;
 
-    public void executeDatabaseQuery() {
+    public void executeDatabaseQuery() throws Exception {
         loadDatabaseDriver();
         databaseConnection();
         iterateQueryResults();
     }
 
-    private void loadDatabaseDriver() {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (Exception e) {
-            logDriverError(e);
-        }
+    private void loadDatabaseDriver() throws Exception {
+        Class.forName("com.mysql.jdbc.Driver");
     }
 
-    private void databaseConnection() {
-        try {
-            connection = DriverManager.getConnection(url, username, password);
-        } catch (SQLException e) {
-            logSQLError(e);
-        }
+    private void databaseConnection() throws Exception {
+        final String URL = "jdbc:mysql://localhost/elray";
+        final String USERNAME = "root";
+        final String PASSWORD = "";
+
+        connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
     }
 
-    public boolean isDatabaseConnected() {
+    private boolean isDatabaseConnected() {
         return connection != null;
     }
 
-    private void setPreparedStatementToResultSet() {
-        try {
-            resultSet = prepareQueryStatement().executeQuery();
-        } catch (SQLException e) {
-            logSQLError(e);
+    private void iterateQueryResults() throws Exception {
+        if (isDatabaseConnected()) {
+            setPreparedStatementToResultSet();
+            if (resultSet.next()) {
+                iterateEmployeeQuery();
+            }
         }
     }
 
-    public PreparedStatement prepareQueryStatement(){
-        try {
-            return connection.prepareStatement(queryStatement());
-        } catch (SQLException e) {
-            logSQLError(e);
-        }
-        return null;
+    private void iterateEmployeeQuery() throws Exception {
+        do {
+            employeeToString();
+        } while (resultSet.next());
     }
 
-    private String queryStatement() {
-        if (promptQuery().equals("employee")) {
-            return "SELECT  * FROM employee";
-        } else {
-            return "";
-        }
+    private void setPreparedStatementToResultSet() throws Exception {
+        resultSet = prepareQueryStatement().executeQuery();
+    }
+
+    private PreparedStatement prepareQueryStatement() throws Exception {
+        return connection.prepareStatement("SELECT  * FROM employee ");
+    }
+
+    private void getEmployeeInfo() throws Exception {
+        employeeFName = resultSet.getString("FirstName");
+        employeeLName = resultSet.getString("LastName");
+        employeeID = resultSet.getString("empid");
     }
 
     private String promptQuery() {
@@ -72,40 +67,7 @@ public class Database {
         return scanner.next();
     }
 
-    public void iterateQueryResults() {
-        if (isDatabaseConnected()) {
-            try {
-                setPreparedStatementToResultSet();
-                if(resultSet.next()) {
-                    iterateEmployeeQuery();
-                }
-            } catch (SQLException e) {
-                logSQLError(e);
-            }
-        }
-    }
-
-    private void iterateEmployeeQuery() {
-        try {
-            do {
-                employeeToString();
-            } while (resultSet.next());
-        } catch (SQLException e) {
-            logSQLError(e);
-        }
-    }
-
-    private void getEmployeeInfo() {
-        try {
-            employeeFName = resultSet.getString("FirstName");
-            employeeLName = resultSet.getString("LastName");
-            employeeID = resultSet.getString("empid");
-        } catch (SQLException e) {
-            logSQLError(e);
-        }
-    }
-
-    private void employeeToString() {
+    private void employeeToString() throws Exception {
         getEmployeeInfo();
         System.out.println("Employee: " + employeeFName + " " + employeeLName);
         System.out.println("Employee ID: " + employeeID);
