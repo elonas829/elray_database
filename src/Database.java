@@ -3,16 +3,19 @@ import java.util.Scanner;
 
 public class Database {
 
+    private Query query = new Query();
     private String employeeFName, employeeLName, employeeID;
+    private PassResultSet passResultSet = new PassResultSet();
+    private Employee employee = new Employee();
 
     public Connection connection = null;
-    private ResultSet resultSet = null;
 
-    Query query = new Query();
+
 
     public void executeDatabaseQuery() throws Exception {
         loadDatabaseDriver();
         databaseConnection();
+        query.executeQuery();
         iterateQueryResults();
     }
 
@@ -35,45 +38,18 @@ public class Database {
     private void iterateQueryResults() throws Exception {
         if (isDatabaseConnected()) {
             setPreparedStatementToResultSet();
-            if (resultSet.next()) {
-                iterateEmployeeQuery();
+            if (passResultSet.getResultSet().next()) {
+                employee.iterateEmployeeQuery();
             }
         }
     }
 
-    private void iterateEmployeeQuery() throws Exception {
-        do {
-            employeeToString();
-        } while (resultSet.next());
-    }
-
     private void setPreparedStatementToResultSet() throws Exception {
-        resultSet = prepareQueryStatement().executeQuery();
+        passResultSet.setResultSet(prepareQueryStatement().executeQuery());
     }
 
     private PreparedStatement prepareQueryStatement() throws Exception {
-        return connection.prepareStatement("SELECT  * FROM employee ");
-    }
-
-    private void getEmployeeInfo() throws Exception {
-        employeeFName = resultSet.getString("FirstName");
-        employeeLName = resultSet.getString("LastName");
-        employeeID = resultSet.getString("empid");
-    }
-
-    private String promptQuery() {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("1. Employee info.");
-        System.out.print("Please enter option: ");
-        return scanner.next();
-    }
-
-    private void employeeToString() throws Exception {
-        getEmployeeInfo();
-        System.out.println("Employee: " + employeeFName + " " + employeeLName);
-        System.out.println("Employee ID: " + employeeID);
-        System.out.println("---------------------------------------------------------");
+        return connection.prepareStatement(query.getQuery());
     }
 
     private void logSQLError(SQLException e) {

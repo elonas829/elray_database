@@ -1,25 +1,41 @@
-import javax.xml.crypto.Data;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Scanner;
 
-public class Query extends Database{
+public class Query {
 
+    private String query;
+    private String option;
 
-
-    private ResultSet resultSet;
-
-    public Query() {
-        resultSet = null;
+    Query() {
+        query = "";
+        option = "";
     }
 
-    private void setPreparedStatementToResultSet() throws Exception {
-        resultSet = prepareQueryStatement().executeQuery();
+    public void executeQuery() {
+        askQuery();
+        checkQuery();
     }
 
-    private PreparedStatement prepareQueryStatement() throws Exception {
-        return connection.prepareStatement("SELECT  * FROM employee ");
+    private void askQuery() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("1. Employee info.");
+        System.out.print("Please enter option: ");
+        option = scanner.next();
+    }
+
+    private String checkQuery() {
+
+        switch (option) {
+            case "1":
+                query = "SELECT  * FROM employee ";
+                break;
+        }
+        return query;
+    }
+
+    public String getQuery() {
+        return checkQuery();
     }
 
     private void logSQLError(SQLException e) {
