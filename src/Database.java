@@ -5,8 +5,10 @@ public class Database {
 
     private String employeeFName, employeeLName, employeeID;
 
-    private Connection connection = null;
+    public Connection connection = null;
     private ResultSet resultSet = null;
+
+    Query query = new Query();
 
     public void executeDatabaseQuery() throws Exception {
         loadDatabaseDriver();

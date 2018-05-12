@@ -4,9 +4,23 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+public class Query extends Database{
 
 
-public class Query  {
+
+    private ResultSet resultSet;
+
+    public Query() {
+        resultSet = null;
+    }
+
+    private void setPreparedStatementToResultSet() throws Exception {
+        resultSet = prepareQueryStatement().executeQuery();
+    }
+
+    private PreparedStatement prepareQueryStatement() throws Exception {
+        return connection.prepareStatement("SELECT  * FROM employee ");
+    }
 
     private void logSQLError(SQLException e) {
         System.err.println("SQL exception: " + e.getMessage());
