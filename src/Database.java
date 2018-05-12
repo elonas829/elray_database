@@ -4,12 +4,9 @@ import java.util.Scanner;
 public class Database {
 
     private Query query = new Query();
-    private String employeeFName, employeeLName, employeeID;
     private PassResultSet passResultSet = new PassResultSet();
-    private Employee employee = new Employee();
 
     public Connection connection = null;
-
 
 
     public void executeDatabaseQuery() throws Exception {
@@ -39,7 +36,7 @@ public class Database {
         if (isDatabaseConnected()) {
             setPreparedStatementToResultSet();
             if (passResultSet.getResultSet().next()) {
-                employee.iterateEmployeeQuery();
+                query.iterateData();
             }
         }
     }
