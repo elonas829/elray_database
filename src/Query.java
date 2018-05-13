@@ -4,10 +4,8 @@ public class Query {
 
     private String query;
     private String option;
-
     private Employee employee = new Employee();
     private Assignment assignment = new Assignment();
-
     private Scanner scanner = new Scanner(System.in);
 
     Query() {
@@ -43,8 +41,6 @@ public class Query {
                 break;
         }
     }
-
-
 
     public void iterateData() throws Exception {
         switch (option) {

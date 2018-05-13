@@ -6,8 +6,11 @@ public class Database {
     private Query query = new Query();
     private PassResultSet passResultSet = new PassResultSet();
 
-    public Connection connection = null;
+    private Connection connection;
 
+    Database() {
+        connection = null;
+    }
 
     public void executeDatabaseQuery() throws Exception {
         loadDatabaseDriver();
@@ -60,10 +63,3 @@ public class Database {
         System.err.println(e.getMessage());
     }
 }
-
-//                PreparedStatement employees = conn.prepareStatement(
-//                    "SELECT employeeFName, employeeLName, employeeID "
-//                            + "FROM employee "
-//                            + "WHERE employeeid = ?");
-//                final String getEmployeeID = "0";
-//                employees.setString(1, getEmployeeID);

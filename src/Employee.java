@@ -1,7 +1,6 @@
 public class Employee {
 
     private String employeeFName, employeeLName, employeeID, employeeSSN;
-
     private PassResultSet passResultSet = new PassResultSet();
 
     public void iterateAllEmployeeQuery() throws Exception {
