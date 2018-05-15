@@ -73,12 +73,9 @@ public class Employee {
                 column = "SSN";
                 break;
             case "4":
-                column = "EmpId";
-                break;
-            case "5":
                 column = "PhoneNumber";
                 break;
-            case "6":
+            case "5":
                 column = "Email";
                 break;
             default:
@@ -102,9 +99,8 @@ public class Employee {
         System.out.println("1. First Name");
         System.out.println("2. Last Name");
         System.out.println("3. SNN");
-        System.out.println("4. Employee ID");
-        System.out.println("5. Phone Number");
-        System.out.println("6. Email");
+        System.out.println("4. Phone Number");
+        System.out.println("5. Email"); 
         System.out.print("Select data to update: ");
 
         return scanner.next();
