@@ -1,19 +1,32 @@
 import java.sql.*;
-import java.util.Scanner;
 
 public class Database {
 
     private Query query = new Query();
     private PassResultSet passResultSet = new PassResultSet();
 
-    public Connection connection = null;
+    private Connection connection;
 
+    Database() {
+        connection = null;
+    }
 
-    public void executeDatabaseQuery() throws Exception {
+    public void executeProgram() throws Exception {
         loadDatabaseDriver();
         databaseConnection();
-        query.executeQuery();
-        iterateQueryResults();
+        query.dataManipulation();
+        whichQuery();
+
+        connection.close();
+    }
+
+    private void whichQuery() throws Exception {
+        if (query.getOption().equals("1") || query.getOption().equals("2") || query.getOption().equals("3")) {
+            iterateQueryResults();
+        } else if(query.getOption().equals("4")) {
+            prepareUpdate().executeUpdate();
+            System.out.println("Data update successful.");
+        }
     }
 
     private void loadDatabaseDriver() throws Exception {
@@ -49,21 +62,7 @@ public class Database {
         return connection.prepareStatement(query.getQuery());
     }
 
-    private void logSQLError(SQLException e) {
-        System.err.println("SQL exception: " + e.getMessage());
-        System.err.println("SQL state: " + e.getSQLState());
-        System.err.println("Error code: " + e.getErrorCode());
-    }
-
-    private void logDriverError(Exception e) {
-        System.err.println("Error when loading DB driver:");
-        System.err.println(e.getMessage());
+    private PreparedStatement prepareUpdate() throws Exception {
+        return connection.prepareStatement(query.getQuery());
     }
 }
-
-//                PreparedStatement employees = conn.prepareStatement(
-//                    "SELECT employeeFName, employeeLName, employeeID "
-//                            + "FROM employee "
-//                            + "WHERE employeeid = ?");
-//                final String getEmployeeID = "0";
-//                employees.setString(1, getEmployeeID);

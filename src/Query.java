@@ -4,10 +4,8 @@ public class Query {
 
     private String query;
     private String option;
-
     private Employee employee = new Employee();
     private Assignment assignment = new Assignment();
-
     private Scanner scanner = new Scanner(System.in);
 
     Query() {
@@ -15,7 +13,7 @@ public class Query {
         option = "";
     }
 
-    public void executeQuery() {
+    public void dataManipulation() {
         askQuery();
         checkQuery();
     }
@@ -24,27 +22,30 @@ public class Query {
         System.out.println("1. All Employee info.");
         System.out.println("2. All Assignments.");
         System.out.println("3. Get Employee info by ID.");
+        System.out.println("4. Update employee info.");
         System.out.print("Please enter option: ");
         option = scanner.next();
-        System.out.println("---------------------------------------------------------");
+        System.out.println("-------------------------------------------");
     }
 
     private void checkQuery() {
         switch (option) {
             case "1":
-                query = employeeQueryString();
+                query = employee.employeeQueryString();
                 break;
             case "2":
-                query = assignmentQueryString();
+                query = assignment.assignmentQueryString();
                 break;
             case "3":
-                query = employeeInfoByIdQueryString();
+                query = employee.infoByIdQueryString();
+                break;
+            case "4":
+                query = employee.updateEmployeeInfo();
+                break;
             default:
                 break;
         }
     }
-
-
 
     public void iterateData() throws Exception {
         switch (option) {
@@ -56,37 +57,18 @@ public class Query {
                 break;
             case "3":
                 employee.iterateEmployeeInfoByIdQuery();
+            case "4":
+                break;
             default:
                 break;
         }
     }
 
-    private String employeeQueryString() {
-        return "SELECT  * FROM employee ";
-    }
-
-    private String assignmentQueryString() {
-        return "SELECT `assignment`.`ProjectID`,\n" +
-                "    `assignment`.`EmpID`,\n" +
-                "    `employee`.`FirstName`,\n" +
-                "    `employee`.`LastName` \n" +
-                "FROM `elray`.`assignment` \n" +
-                "INNER JOIN `employee` ON `assignment`.`EmpID`=`employee`.`EmpID`;\n";
-    }
-
-    private String getEmployeeId() {
-        System.out.print("Enter employee ID: ");
-        return scanner.next();
-
-    }
-
-    private String employeeInfoByIdQueryString() {
-        return "SELECT FirstName, LastName, EmpID "
-                + "FROM employee "
-                + "WHERE EmpID = " + getEmployeeId();
-    }
-
     public String getQuery() {
         return query;
+    }
+
+    public String getOption() {
+        return option;
     }
 }

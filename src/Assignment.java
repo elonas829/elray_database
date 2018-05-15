@@ -7,7 +7,6 @@ public class Assignment {
     private PassResultSet passResultSet = new PassResultSet();
 
     public void iterateAssignmentQuery() throws Exception {
-        getAssignmentInfo();
         do {
             assignmentToString();
         } while (passResultSet.getResultSet().next());
@@ -20,9 +19,19 @@ public class Assignment {
         employeeLName = passResultSet.getResultSet().getString("LastName");
     }
 
-    private void assignmentToString() {
+    private void assignmentToString() throws Exception {
+        getAssignmentInfo();
         System.out.println("Employee: " + employeeFName + " " + employeeLName + " " + employeeID);
         System.out.println("Assignment ID: " + assignmentID);
         System.out.println("---------------------------------------------------------");
+    }
+
+    public String assignmentQueryString() {
+        return "SELECT `assignment`.`ProjectID`,\n" +
+                " `assignment`.`EmpID`,\n" +
+                " `employee`.`FirstName`,\n" +
+                " `employee`.`LastName` \n" +
+                "FROM `elray`.`assignment` \n" +
+                "INNER JOIN `employee` ON `assignment`.`EmpID`=`employee`.`EmpID`;\n";
     }
 }
