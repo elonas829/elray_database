@@ -22,9 +22,10 @@ public class Query {
         System.out.println("1. All Employee info.");
         System.out.println("2. All Assignments.");
         System.out.println("3. Get Employee info by ID.");
+        System.out.println("4. Update employee info.");
         System.out.print("Please enter option: ");
         option = scanner.next();
-        System.out.println("---------------------------------------------------------");
+        System.out.println("-------------------------------------------");
     }
 
     private void checkQuery() {
@@ -37,6 +38,10 @@ public class Query {
                 break;
             case "3":
                 query = employeeInfoByIdQueryString();
+                break;
+            case "4":
+                query = selectEmployeeDataToUpdate();
+                break;
             default:
                 break;
         }
@@ -52,6 +57,8 @@ public class Query {
                 break;
             case "3":
                 employee.iterateEmployeeInfoByIdQuery();
+            case "4":
+                break;
             default:
                 break;
         }
@@ -63,9 +70,9 @@ public class Query {
 
     private String assignmentQueryString() {
         return "SELECT `assignment`.`ProjectID`,\n" +
-                "    `assignment`.`EmpID`,\n" +
-                "    `employee`.`FirstName`,\n" +
-                "    `employee`.`LastName` \n" +
+                " `assignment`.`EmpID`,\n" +
+                " `employee`.`FirstName`,\n" +
+                " `employee`.`LastName` \n" +
                 "FROM `elray`.`assignment` \n" +
                 "INNER JOIN `employee` ON `assignment`.`EmpID`=`employee`.`EmpID`;\n";
     }
@@ -73,16 +80,24 @@ public class Query {
     private String getEmployeeId() {
         System.out.print("Enter employee ID: ");
         return scanner.next();
-
     }
 
     private String employeeInfoByIdQueryString() {
         return "SELECT FirstName, LastName, EmpID "
-                + "FROM employee "
+                + "FROM `elray`.`employee` "
                 + "WHERE EmpID = " + getEmployeeId();
     }
 
     public String getQuery() {
         return query;
     }
+
+    private String selectEmployeeDataToUpdate() {
+        return employee.getUpdateQuery();
+    }
+
+    public String getOption() {
+        return option;
+    }
+
 }

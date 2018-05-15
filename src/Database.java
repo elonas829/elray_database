@@ -16,7 +16,17 @@ public class Database {
         loadDatabaseDriver();
         databaseConnection();
         query.executeQuery();
-        iterateQueryResults();
+        whichQuery();
+
+        connection.close();
+    }
+
+    private void whichQuery() throws Exception {
+        if (query.getOption().equals("1") || query.getOption().equals("2") || query.getOption().equals("3")) {
+            iterateQueryResults();
+        } else if(query.getOption().equals("4")) {
+            prepareUpdate().executeUpdate();
+        }
     }
 
     private void loadDatabaseDriver() throws Exception {
@@ -52,14 +62,7 @@ public class Database {
         return connection.prepareStatement(query.getQuery());
     }
 
-    private void logSQLError(SQLException e) {
-        System.err.println("SQL exception: " + e.getMessage());
-        System.err.println("SQL state: " + e.getSQLState());
-        System.err.println("Error code: " + e.getErrorCode());
-    }
-
-    private void logDriverError(Exception e) {
-        System.err.println("Error when loading DB driver:");
-        System.err.println(e.getMessage());
+    private PreparedStatement prepareUpdate() throws Exception {
+        return connection.prepareStatement(query.getQuery());
     }
 }

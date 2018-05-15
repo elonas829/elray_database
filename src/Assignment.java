@@ -7,7 +7,6 @@ public class Assignment {
     private PassResultSet passResultSet = new PassResultSet();
 
     public void iterateAssignmentQuery() throws Exception {
-        getAssignmentInfo();
         do {
             assignmentToString();
         } while (passResultSet.getResultSet().next());
@@ -20,7 +19,8 @@ public class Assignment {
         employeeLName = passResultSet.getResultSet().getString("LastName");
     }
 
-    private void assignmentToString() {
+    private void assignmentToString() throws Exception {
+        getAssignmentInfo();
         System.out.println("Employee: " + employeeFName + " " + employeeLName + " " + employeeID);
         System.out.println("Assignment ID: " + assignmentID);
         System.out.println("---------------------------------------------------------");
