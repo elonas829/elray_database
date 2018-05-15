@@ -45,21 +45,18 @@ public class Employee {
         employeeID = passResultSet.getResultSet().getString("EmpId");
     }
 
-    private String updateEmployeeInfo() {
+    public String updateEmployeeInfo() {
         String employeeId;
         String changedData;
         String column;
-        String query;
 
         column = checkUpdateColumn(promptUpdateOption());
         employeeId = promptEmployeeId();
         changedData = promptEmployeeData(column);
 
-        query = "UPDATE `elray`.`employee` \n" +
+        return "UPDATE `elray`.`employee` \n" +
                 "SET `" + column + "` = \"" + changedData + "\" \n" +
                 "WHERE `EmpID` = " + employeeId +";";
-
-        return query;
     }
 
     private String checkUpdateColumn(String option) {
@@ -113,8 +110,19 @@ public class Employee {
         return scanner.next();
     }
 
-    public String getUpdateQuery() {
-        return updateEmployeeInfo();
+    private String getEmployeeId() {
+        System.out.print("Enter employee ID: ");
+        return scanner.next();
+    }
+
+    public String infoByIdQueryString() {
+        return "SELECT FirstName, LastName, EmpID "
+                + "FROM `elray`.`employee` "
+                + "WHERE EmpID = " + getEmployeeId();
+    }
+
+    public String employeeQueryString() {
+        return "SELECT  * FROM employee ";
     }
 }
 

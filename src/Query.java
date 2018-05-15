@@ -13,7 +13,7 @@ public class Query {
         option = "";
     }
 
-    public void executeQuery() {
+    public void dataManipulation() {
         askQuery();
         checkQuery();
     }
@@ -31,16 +31,16 @@ public class Query {
     private void checkQuery() {
         switch (option) {
             case "1":
-                query = employeeQueryString();
+                query = employee.employeeQueryString();
                 break;
             case "2":
-                query = assignmentQueryString();
+                query = assignment.assignmentQueryString();
                 break;
             case "3":
-                query = employeeInfoByIdQueryString();
+                query = employee.infoByIdQueryString();
                 break;
             case "4":
-                query = selectEmployeeDataToUpdate();
+                query = employee.updateEmployeeInfo();
                 break;
             default:
                 break;
@@ -64,40 +64,11 @@ public class Query {
         }
     }
 
-    private String employeeQueryString() {
-        return "SELECT  * FROM employee ";
-    }
-
-    private String assignmentQueryString() {
-        return "SELECT `assignment`.`ProjectID`,\n" +
-                " `assignment`.`EmpID`,\n" +
-                " `employee`.`FirstName`,\n" +
-                " `employee`.`LastName` \n" +
-                "FROM `elray`.`assignment` \n" +
-                "INNER JOIN `employee` ON `assignment`.`EmpID`=`employee`.`EmpID`;\n";
-    }
-
-    private String getEmployeeId() {
-        System.out.print("Enter employee ID: ");
-        return scanner.next();
-    }
-
-    private String employeeInfoByIdQueryString() {
-        return "SELECT FirstName, LastName, EmpID "
-                + "FROM `elray`.`employee` "
-                + "WHERE EmpID = " + getEmployeeId();
-    }
-
     public String getQuery() {
         return query;
-    }
-
-    private String selectEmployeeDataToUpdate() {
-        return employee.getUpdateQuery();
     }
 
     public String getOption() {
         return option;
     }
-
 }

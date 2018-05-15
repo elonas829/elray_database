@@ -1,5 +1,4 @@
 import java.sql.*;
-import java.util.Scanner;
 
 public class Database {
 
@@ -12,10 +11,10 @@ public class Database {
         connection = null;
     }
 
-    public void executeDatabaseQuery() throws Exception {
+    public void executeProgram() throws Exception {
         loadDatabaseDriver();
         databaseConnection();
-        query.executeQuery();
+        query.dataManipulation();
         whichQuery();
 
         connection.close();
@@ -26,6 +25,7 @@ public class Database {
             iterateQueryResults();
         } else if(query.getOption().equals("4")) {
             prepareUpdate().executeUpdate();
+            System.out.println("Data update successful.");
         }
     }
 

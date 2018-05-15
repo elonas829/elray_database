@@ -25,4 +25,13 @@ public class Assignment {
         System.out.println("Assignment ID: " + assignmentID);
         System.out.println("---------------------------------------------------------");
     }
+
+    public String assignmentQueryString() {
+        return "SELECT `assignment`.`ProjectID`,\n" +
+                " `assignment`.`EmpID`,\n" +
+                " `employee`.`FirstName`,\n" +
+                " `employee`.`LastName` \n" +
+                "FROM `elray`.`assignment` \n" +
+                "INNER JOIN `employee` ON `assignment`.`EmpID`=`employee`.`EmpID`;\n";
+    }
 }
