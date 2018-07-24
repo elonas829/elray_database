@@ -6,7 +6,7 @@ public class Assignment {
 
     private PassResultSet passResultSet = new PassResultSet();
 
-    public void iterateAssignmentQuery() throws Exception {
+    void iterateAssignmentQuery() throws Exception {
         do {
             assignmentToString();
         } while (passResultSet.getResultSet().next());
@@ -26,7 +26,7 @@ public class Assignment {
         System.out.println("---------------------------------------------------------");
     }
 
-    public String assignmentQueryString() {
+    String assignmentQueryString() {
         return "SELECT `assignment`.`ProjectID`,\n" +
                 " `assignment`.`EmpID`,\n" +
                 " `employee`.`FirstName`,\n" +

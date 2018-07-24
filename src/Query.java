@@ -13,7 +13,7 @@ public class Query {
         option = "";
     }
 
-    public void dataManipulation() {
+    void dataManipulation() {
         askQuery();
         checkQuery();
     }
@@ -47,7 +47,7 @@ public class Query {
         }
     }
 
-    public void iterateData() throws Exception {
+     void iterateData() throws Exception {
         switch (option) {
             case "1":
                 employee.iterateAllEmployeeQuery();

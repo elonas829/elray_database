@@ -11,7 +11,7 @@ public class Database {
         connection = null;
     }
 
-    public void executeProgram() throws Exception {
+    void executeProgram() throws Exception {
         loadDatabaseDriver();
         databaseConnection();
         query.dataManipulation();

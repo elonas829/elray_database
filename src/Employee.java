@@ -6,7 +6,7 @@ public class Employee {
     private PassResultSet passResultSet = new PassResultSet();
     private Scanner scanner = new Scanner(System.in);
 
-    public void iterateAllEmployeeQuery() throws Exception {
+    void iterateAllEmployeeQuery() throws Exception {
         System.out.printf("%12s%12s%7s%12s\n", "First Name", "Last Name", "ID", "SSN");
         System.out.println("-------------------------------------------");
         do {
@@ -26,7 +26,7 @@ public class Employee {
         employeeSSN = passResultSet.getResultSet().getString("SSN");
     }
 
-    public void iterateEmployeeInfoByIdQuery() throws Exception {
+    void iterateEmployeeInfoByIdQuery() throws Exception {
         System.out.printf("%12s%12s%7s\n", "First Name", "Last Name", "ID");
         System.out.println("-------------------------------------------");
         do {
@@ -45,7 +45,7 @@ public class Employee {
         employeeID = passResultSet.getResultSet().getString("EmpId");
     }
 
-    public String updateEmployeeInfo() {
+    String updateEmployeeInfo() {
         String employeeId;
         String changedData;
         String column;
@@ -111,13 +111,13 @@ public class Employee {
         return scanner.next();
     }
 
-    public String infoByIdQueryString() {
+    String infoByIdQueryString() {
         return "SELECT FirstName, LastName, EmpID "
                 + "FROM `elray`.`employee` "
                 + "WHERE EmpID = " + getEmployeeId();
     }
 
-    public String employeeQueryString() {
+    String employeeQueryString() {
         return "SELECT  * FROM employee ";
     }
 }

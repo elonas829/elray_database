@@ -1,14 +1,14 @@
 import java.sql.ResultSet;
 
-public class PassResultSet {
+class PassResultSet {
 
     private static ResultSet resultSet = null;
 
-    public ResultSet getResultSet() {
+    ResultSet getResultSet() {
         return resultSet;
     }
 
-    public void setResultSet(ResultSet result) {
+    void setResultSet(ResultSet result) {
         resultSet = result;
     }
 }
