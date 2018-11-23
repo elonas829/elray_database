@@ -1,89 +1,76 @@
+import java.sql.ResultSet;
 import java.util.Scanner;
 
 public class Employee {
 
-    private String employeeFName, employeeLName, employeeID, employeeSSN;
-    private PassResultSet passResultSet = new PassResultSet();
+    private String employeeFName;
+    private String employeeLName;
+    private String employeeID;
+
     private Scanner scanner = new Scanner(System.in);
 
-    void iterateAllEmployeeQuery() throws Exception {
+    void iterateAllEmployeeQuery(ResultSet resultSet) throws Exception {
         System.out.printf("%12s%12s%7s%12s\n", "First Name", "Last Name", "ID", "SSN");
         System.out.println("-------------------------------------------");
         do {
-            allEmployeeToString();
-        } while (passResultSet.getResultSet().next());
+            employeeFName = resultSet.getString("first_name");
+            employeeLName = resultSet.getString("last_name");
+            employeeID = resultSet.getString("emp_id");
+            String employeeSSN = resultSet.getString("SSN");
+            System.out.printf("%12s%12s%7s%12s\n", employeeFName, employeeLName, employeeID, employeeSSN);
+        } while (resultSet.next());
     }
 
-    private void allEmployeeToString() throws Exception {
-        getAllEmployeeInfo();
-        System.out.printf("%12s%12s%7s%12s\n", employeeFName, employeeLName, employeeID, employeeSSN);
-    }
-
-    private void getAllEmployeeInfo() throws Exception {
-        employeeFName = passResultSet.getResultSet().getString("FirstName");
-        employeeLName = passResultSet.getResultSet().getString("LastName");
-        employeeID = passResultSet.getResultSet().getString("EmpId");
-        employeeSSN = passResultSet.getResultSet().getString("SSN");
-    }
-
-    void iterateEmployeeInfoByIdQuery() throws Exception {
+    void iterateEmployeeInfoByIdQuery(ResultSet resultSet) throws Exception {
         System.out.printf("%12s%12s%7s\n", "First Name", "Last Name", "ID");
         System.out.println("-------------------------------------------");
         do {
-            employeeInfoById();
-        } while (passResultSet.getResultSet().next());
-    }
-
-    private void employeeInfoById() throws Exception {
-        getEmployeeInfoById();
-        System.out.printf("%12s%12s%7s\n", employeeFName, employeeLName, employeeID);
-    }
-
-    private void getEmployeeInfoById() throws Exception {
-        employeeFName = passResultSet.getResultSet().getString("FirstName");
-        employeeLName = passResultSet.getResultSet().getString("LastName");
-        employeeID = passResultSet.getResultSet().getString("EmpId");
+            employeeFName = resultSet.getString("FirstName");
+            employeeLName = resultSet.getString("LastName");
+            employeeID = resultSet.getString("EmpId");
+            System.out.printf("%12s%12s%7s\n", employeeFName, employeeLName, employeeID);
+        } while (resultSet.next());
     }
 
     String updateEmployeeInfo() {
-        String employeeId;
-        String changedData;
-        String column;
+        System.out.println("1. First Name");
+        System.out.println("2. Last Name");
+        System.out.println("3. SNN");
+        System.out.println("4. Phone Number");
+        System.out.println("5. Email");
+        System.out.print("Select data to update: ");
 
-        column = checkUpdateColumn(promptUpdateOption());
-        employeeId = promptEmployeeId();
-        changedData = promptEmployeeData(column);
-
-        return "UPDATE `elray`.`employee` \n" +
-                "SET `" + column + "` = \"" + changedData + "\" \n" +
-                "WHERE `EmpID` = " + employeeId +";";
-    }
-
-    private String checkUpdateColumn(String option) {
-        String column = "";
+        String option = scanner.next();
 
         switch (option) {
             case "1":
-                column = "FirstName";
+                option = "first_name";
                 break;
             case "2":
-                column = "LastName";
+                option = "last_name";
                 break;
             case "3":
-                column = "SSN";
+                option = "SSN";
                 break;
             case "4":
-                column = "PhoneNumber";
+                option = "PhoneNumber";
                 break;
             case "5":
-                column = "Email";
+                option = "Email";
                 break;
             default:
                 System.out.println("No option chosen: quiting.");
                 break;
         }
-        return column;
+
+        String employeeId = promptEmployeeId();
+        String changedData = promptEmployeeData(option);
+
+        return "UPDATE `elray`.`employee` \n" +
+                "SET `" + option + "` = \"" + changedData + "\" \n" +
+                "WHERE `emp_id` = " + employeeId +";";
     }
+
 
     private String promptEmployeeId() {
         System.out.print("Enter Employee ID: ");
@@ -95,30 +82,17 @@ public class Employee {
         return scanner.next();
     }
 
-    private String promptUpdateOption() {
-        System.out.println("1. First Name");
-        System.out.println("2. Last Name");
-        System.out.println("3. SNN");
-        System.out.println("4. Phone Number");
-        System.out.println("5. Email"); 
-        System.out.print("Select data to update: ");
-
-        return scanner.next();
-    }
-
-    private String getEmployeeId() {
-        System.out.print("Enter employee ID: ");
-        return scanner.next();
-    }
 
     String infoByIdQueryString() {
-        return "SELECT FirstName, LastName, EmpID "
+        return "SELECT first_name, last_name, emp_id"
                 + "FROM `elray`.`employee` "
-                + "WHERE EmpID = " + getEmployeeId();
+                + "WHERE EmpID = " + promptEmployeeId();
     }
 
     String employeeQueryString() {
         return "SELECT  * FROM employee ";
     }
+
+
 }
 
