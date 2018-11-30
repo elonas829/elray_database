@@ -8,7 +8,6 @@ public class Database {
     private final String PASSWORD = "";
 
     private Connection connection;
-    public ResultSet resultSet = null;
 
     private String option;
     private Employee employee = new Employee();
@@ -39,9 +38,9 @@ public class Database {
 
     private void iterateQueryResults() throws Exception {
         if (isDatabaseConnected()) {
-            resultSet = prepareQueryStatement().executeQuery();
+            ResultSet resultSet = prepareQueryStatement().executeQuery();
             if (resultSet.next()) {
-                iterateData();
+                iterateData(resultSet);
             }
         }
     }
@@ -80,8 +79,7 @@ public class Database {
         return query;
     }
 
-    private void iterateData() throws Exception {
-
+    private void iterateData(ResultSet resultSet) throws Exception {
         switch (option) {
             case "1":
                 employee.iterateAllEmployeeQuery(resultSet);

@@ -25,9 +25,9 @@ public class Employee {
         System.out.printf("%12s%12s%7s\n", "First Name", "Last Name", "ID");
         System.out.println("-------------------------------------------");
         do {
-            employeeFName = resultSet.getString("FirstName");
-            employeeLName = resultSet.getString("LastName");
-            employeeID = resultSet.getString("EmpId");
+            employeeFName = resultSet.getString("first_name");
+            employeeLName = resultSet.getString("last_name");
+            employeeID = resultSet.getString("emp_id");
             System.out.printf("%12s%12s%7s\n", employeeFName, employeeLName, employeeID);
         } while (resultSet.next());
     }
@@ -53,10 +53,10 @@ public class Employee {
                 option = "SSN";
                 break;
             case "4":
-                option = "PhoneNumber";
+                option = "phone_number";
                 break;
             case "5":
-                option = "Email";
+                option = "email";
                 break;
             default:
                 System.out.println("No option chosen: quiting.");
@@ -71,7 +71,6 @@ public class Employee {
                 "WHERE `emp_id` = " + employeeId +";";
     }
 
-
     private String promptEmployeeId() {
         System.out.print("Enter Employee ID: ");
         return scanner.next();
@@ -82,7 +81,6 @@ public class Employee {
         return scanner.next();
     }
 
-
     String infoByIdQueryString() {
         return "SELECT first_name, last_name, emp_id"
                 + "FROM `elray`.`employee` "
@@ -92,7 +90,6 @@ public class Employee {
     String employeeQueryString() {
         return "SELECT  * FROM employee ";
     }
-
 
 }
 
